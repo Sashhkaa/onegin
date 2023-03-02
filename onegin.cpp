@@ -1,4 +1,4 @@
-#include "C:\Users\1\Desktop\TX\TXLib.h"
+//#include "C:\Users\1\Desktop\TX\TXLib.h"
 #include <stdio.h>
 #include <string.h>
 #include <locale.h>
@@ -6,24 +6,27 @@
 #include "onegin.h"
 
 
-int main() {
-    FILE* f = open_file("Eugene_Oneguine.txt");
+int main(int argc, char* argv[]) {
 
-    struct String buffer = {};
+    struct Constructor onegin = {};
 
-    struct Text text = {};
+    char* input_file = nullptr;
+    char* output_file = nullptr;
 
-    buffer.len = size_file(f);
+    if (argc == 3) {
 
-    buffer.str = (char*)calloc((buffer.len + 1), sizeof(char));
+        input_file  = argv[1];
+        output_file = argv[2];
 
-    text.size = buffer_filling(&buffer, f);
+    }
 
-    text.str = (struct String*)calloc(text.size, sizeof(struct String*));
+   // else return 0;
 
-    text_filling(&buffer, &text);
+    constructor(&onegin);
 
-    qsort(text.str, text.size, sizeof(struct String),Cmp_reverse_order);
+    qsort(&onegin.text.str, text.size, sizeof(struct String), Cmp_reverse_order);
+
+    for (int i = 0; i < text.size;
 
     free(buffer.str);
     free(text.str);

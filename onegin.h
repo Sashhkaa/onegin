@@ -7,7 +7,9 @@
 #include <ctype.h>
 
 //onegin->structs_arr[i].str
-
+FILE* open_file(const char* name);
+int size_file(FILE* fp);
+int buffer_filling(struct String* buffer, FILE* f);
 struct String {
     char* str = nullptr;
     int len = 0;
@@ -18,7 +20,20 @@ struct Text {
     int size = 0;
 };
 
-// struct String string содердит указатель на  struct text
+struct Constructor {
+    FILE* file;
+    struct String buffer;
+    struct Text text;
+};
+
+void constructor(struct Constructor* onegin) {
+    onegin->file = open_file("test_file.txt");
+    onegin->buffer.len = size_file(onegin->file);
+    printf("main->buffer->len = %d", onegin->buffer.len);
+    onegin->buffer.str = (char*)calloc((onegin->buffer.len + 1), sizeof(char));
+    onegin->text.size = buffer_filling(&onegin->buffer, onegin->file);
+    onegin->text.str = (struct String*)calloc(onegin->text.size, sizeof(struct String*));
+}
 
 FILE* open_file(const char* name) {
     FILE* fp = fopen(name,"rb");
@@ -44,6 +59,7 @@ int size_file(FILE* fp) {
 
 
 int buffer_filling(struct String* buffer, FILE* f) {
+    printf("1");
     int count_string = 0;
     int res = fread(buffer->str, sizeof(char), buffer->len, f);
     if (res != buffer->len) {
@@ -65,7 +81,7 @@ int buffer_filling(struct String* buffer, FILE* f) {
 }
 
 void text_filling(struct String* buffer, struct Text* text) {
-
+printf("2");
     char* current_pointer = buffer->str;
     for (size_t i = 0; i < text->size ; i++) {
         text->str[i].str = current_pointer;
@@ -155,3 +171,4 @@ int Cmp_reverse_order(const void* left_void, const void* right_void) {
 }
 
 #endif // ONEGIN_H_INCLUDED
+
